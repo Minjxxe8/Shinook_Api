@@ -1,12 +1,6 @@
 <?php
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'darksouls_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_CHARSET', 'utf8mb4');
-
-define('BASE_URL', 'http://localhost/shinook/public/');
+define('BASE_URL', 'http://localhost:8000/');
 define('ROOT_PATH', dirname(__DIR__));
 
 define('ROLE_USER',  'villageois');
