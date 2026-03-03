@@ -38,7 +38,7 @@ class Auth
     {
         self::requireLogin();
         if (!self::isAdmin()) {
-            header('Location: ' . BASE_URL . 'index.php');
+            header('Location: ' . BASE_URL . 'game.php');
             exit;
         }
     }

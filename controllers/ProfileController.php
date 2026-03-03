@@ -19,10 +19,13 @@ class ProfileController
         //$this->gameModel = new GameModel();
     }
 
-    public function show(): void
+    public function showProfile(): void
     {
+        Auth::requireLogin();
+
         $currentUser = Auth::currentUser();
-        $userInfo = $this->userModel->findById($currentUser['id']);
+        $user = $this->userModel->findById($currentUser['id']);
+
        /* $userGames = $this->userGameModel->findByUser($currentUser['id']);
         $achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
         $allGames = $this->gameModel->findAll();*/

@@ -1,2 +1,2 @@
 <?php
-// Crud User, games, levels etc (findByLevel, findByUser, deleteGame etc)
+// Crud User, game, levels etc (findByLevel, findByUser, deleteGame etc)
