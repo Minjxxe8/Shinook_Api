@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shinook – Profil & Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+<div class="leaf-bg" id="leafBg"></div>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="icons/Shinook.png" alt="Shinook" class="logo">
+    Shinook
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="profile.html" class="active">Profil</a></li>
+    <li id="navAuthBtn"><a href="#" class="btn-nav" onclick="showLogin()">Se connecter</a></li>
+  </ul>
+</nav>
+
+<!-- ── PAGE CONTENT ── -->
+<div class="page-wrap">
+
+  <!-- ═══ AUTH VIEW ═══ -->
+  <div id="authView">
+    <div class="auth-header">
+      <img src="icons/profil.jpg" alt="Profil" class="welcome-emoji">
+      <h1>Rejoins l'île !</h1>
+      <p>Connecte-toi ou crée ton compte pour accéder à ta bibliothèque.</p>
+    </div>
+    <div class="auth-container">
+
+      <!-- LOGIN -->
+      <div class="auth-card">
+        <div class="auth-card-title">Se connecter</div>
+        <div class="form-group">
+          <label>Nom de l'habitant</label>
+          <input type="text" id="loginUser" placeholder="ex: Tom_Nook">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="loginPass" placeholder="••••••••">
+        </div>
+        <button class="btn-full" onclick="doLogin()">Atterrir sur l'île</button>
+        <div class="form-divider">ou</div>
+        <button class="btn-full" style="background:var(--accent);box-shadow:0 4px 0 #d4703a;" onclick="doLogin('admin')">⚙️ Connexion Admin (démo)</button>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="auth-card" style="animation-delay:0.1s">
+        <div class="auth-card-title">Créer un compte</div>
+        <div class="form-group">
+          <label>Nom de l'habitant</label>
+          <input type="text" id="regName" placeholder="Ton prénom ou pseudo">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="regEmail" placeholder="toi@ile.fr">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="regPass" placeholder="Minimum 8 caractères">
+        </div>
+        <div class="form-group">
+          <label>Nom de ton île</label>
+          <input type="text" id="regIsland" placeholder="ex: Île des Palmiers">
+        </div>
+        <div class="form-group">
+          <label>Ton avatar</label>
+          <div class="avatar-selector" id="avatarSelector">
+            <div class="avatar-opt selected" data-avatar="🐱">🐱</div>
+            <div class="avatar-opt" data-avatar="🐸">🐸</div>
+            <div class="avatar-opt" data-avatar="🦊">🦊</div>
+            <div class="avatar-opt" data-avatar="🐨">🐨</div>
+            <div class="avatar-opt" data-avatar="🐼">🐼</div>
+            <div class="avatar-opt" data-avatar="🦝">🦝</div>
+            <div class="avatar-opt" data-avatar="🐶">🐶</div>
+            <div class="avatar-opt" data-avatar="🐰">🐰</div>
+            <div class="avatar-opt" data-avatar="🦉">🦉</div>
+            <div class="avatar-opt" data-avatar="🐢">🐢</div>
+          </div>
+        </div>
+        <button class="btn-full" style="background:var(--brown);box-shadow:0 4px 0 #5c3d28;" onclick="doRegister()">Poser les fondations !</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ PROFILE VIEW ═══ -->
+  <div id="profileView">
+
+    <!-- Profile Banner -->
+    <div class="profile-banner">
+      <div class="profile-avatar" id="pAvatar">🐱</div>
+      <div class="profile-info">
+        <div class="p-name" id="pName">Habitant</div>
+        <div class="p-island">🏝️ <span id="pIsland">Île Mystérieuse</span></div>
+        <div class="p-role" id="pRole">🌿 Habitant</div>
+      </div>
+      <div class="profile-stats" id="pStats"></div>
+      <button class="logout-btn" onclick="doLogout()">👋 Quitter l'île</button>
+    </div>
+
+    <!-- My Library -->
+    <div class="section-header">
+      <div class="section-title">🎮 Ma bibliothèque</div>
+      <a href="index.html" style="padding:0.5rem 1.2rem;background:var(--green);color:white;border-radius:50px;text-decoration:none;font-weight:800;font-size:0.85rem;box-shadow:0 3px 0 var(--green-dark);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">+ Ajouter des jeux</a>
+    </div>
+
+    <div class="library-grid" id="libraryGrid"></div>
+
+  </div>
+
+</div>
+
+<!-- ── EDIT MODAL ── -->
+<div class="modal-overlay" id="editOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>✏️ Modifier l'entrée</h2>
+      <button class="modal-close-btn" onclick="closeEdit()">✕</button>
+    </div>
+    <div class="modal-form">
+      <div class="form-group">
+        <label>Temps de jeu (h)</label>
+        <input type="number" id="editPlaytime" min="0" max="9999" placeholder="42">
+      </div>
+      <div class="form-group">
+        <label>Genre du personnage</label>
+        <select id="editGender">
+          <option value="🧑 Neutre">🧑 Neutre</option>
+          <option value="👦 Masculin">👦 Masculin</option>
+          <option value="👧 Féminin">👧 Féminin</option>
+          <option value="🤖 Robot">🤖 Robot</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Notes perso</label>
+        <input type="text" id="editNotes" placeholder="Mon jeu préféré !">
+      </div>
+      <button class="btn-full" onclick="saveEdit()">💾 Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <strong>Shinook</strong> — Fait par Elisabeth ROBL, Léna Ricard et Emma De Oliveira &nbsp;|&nbsp; Tom Nook vous surveille 🦝
+</footer>
+
+<script>
+/* ── LEAF BACKGROUND ── */
+const leafBg = document.getElementById('leafBg');
+const leafStickers = [
+  'stickers/ballon.png',
+  'stickers/objet.png',
+  'stickers/fossile.png',
+  'stickers/cloquettes.png',
+];
+for (let i = 0; i < 15; i++) {
+  const s = document.createElement('img');
+  s.className = 'leaf-sticker';
+  const stickerSrc = leafStickers[Math.floor(Math.random() * leafStickers.length)];
+  s.src = stickerSrc;
+  if (stickerSrc.includes('ballon.png')) {
+    s.classList.add('no-rotate');
+  }
+  s.alt = '';
+  s.setAttribute('aria-hidden', 'true');
+  s.style.left = Math.random() * 100 + '%';
+  s.style.animationDuration = (8 + Math.random() * 14) + 's';
+  s.style.animationDelay = (Math.random() * 12) + 's';
+  s.style.width = (20 + Math.random() * 24) + 'px';
+  leafBg.appendChild(s);
+}
+
+/* ── DATA ── */
+const GAMES_DATA = {
+  1: { title: 'Forêt des Origines', genre: 'RPG', emoji: '🌿', trophies: [
+    { icon: '🌱', name: 'Premier Pas' }, { icon: '🍄', name: 'Cueilleur Pro' },
+    { icon: '🦌', name: 'Ami des Bêtes' }, { icon: '✨', name: 'Magie Verte' },
+  ]},
+  5: { title: 'Pirates du Lagon', genre: 'Aventure', emoji: '⚓', trophies: [
+    { icon: '⚓', name: 'Premier Mousse' }, { icon: '🦜', name: 'Ami du Perroquet' },
+    { icon: '💰', name: 'Richesse des Mers' }, { icon: '🗺️', name: 'Cartographe' }, { icon: '🏴‍☠️', name: 'Capitaine' },
+  ]},
+};
+
+/* ── SESSION STATE ── */
+let currentUser = null;
+let editingGameId = null;
+
+const MOCK_USERS = {
+  player: {
+    name: 'Nook Junior',
+    island: 'Île des Érables',
+    avatar: '🦝',
+    role: 'Habitant',
+    library: {
+      1: { playtime: randomHours(), addedDate: randomDate(), gender: '🧑 Neutre', notes: 'Super ambiance !', earnedTrophies: [0, 1] },
+      5: { playtime: randomHours(), addedDate: randomDate(), gender: '👦 Masculin', notes: 'J\'adore ce jeu', earnedTrophies: [0, 2, 4] },
+    }
+  },
+  admin: {
+    name: 'Tom Raton',
+    island: 'Nook Inc. HQ',
+    avatar: '🦝',
+    role: 'Administrateur',
+    library: {
+      1: { playtime: randomHours(), addedDate: randomDate(), gender: '🧑 Neutre', notes: '', earnedTrophies: [0, 1, 2, 3] },
+    }
+  }
+};
+
+function randomHours() { return Math.floor(Math.random() * 300) + 5; }
+function randomDate() {
+  const d = new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 400);
+  return d.toLocaleDateString('fr-FR');
+}
+function randomDeathDate() {
+  const d = new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 200);
+  return d.toLocaleDateString('fr-FR');
+}
+
+/* ── AUTH LOGIC ── */
+function doLogin(type = 'player') {
+  const user = type === 'admin' ? MOCK_USERS.admin : MOCK_USERS.player;
+  currentUser = JSON.parse(JSON.stringify(user)); // deep clone
+  showProfile();
+  showToast('🌿 Bienvenue sur l\'île, ' + currentUser.name + ' !', 'success');
+}
+
+function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const island = document.getElementById('regIsland').value.trim();
+  const avatar = document.querySelector('.avatar-opt.selected')?.dataset.avatar || '🐱';
+
+  if (!name || !email || !pass || !island) {
+    showToast('⚠️ Remplis tous les champs !', '');
+    return;
+  }
+  if (pass.length < 8) {
+    showToast('⚠️ Mot de passe trop court (min 8 car.) !', '');
+    return;
+  }
+
+  currentUser = {
+    name, island, avatar, role: 'Habitant', library: {}
+  };
+  showProfile();
+  showToast('🏠 Compte créé ! Bienvenue sur l\'île, ' + name + ' !', 'success');
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('profileView').style.display = 'none';
+  document.getElementById('authView').style.display = 'block';
+  document.getElementById('navAuthBtn').innerHTML = '<a href="#" class="btn-nav" onclick="showLogin()">Se connecter</a>';
+  showToast('👋 À bientôt sur l\'île !', '');
+}
+
+function showLogin() {
+  document.getElementById('authView').style.display = 'block';
+  document.getElementById('profileView').style.display = 'none';
+}
+
+/* ── AVATAR SELECTOR ── */
+document.getElementById('avatarSelector').querySelectorAll('.avatar-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+  });
+});
+
+/* ── RENDER PROFILE ── */
+function showProfile() {
+  document.getElementById('authView').style.display = 'none';
+  document.getElementById('profileView').style.display = 'block';
+
+  document.getElementById('pAvatar').textContent = currentUser.avatar;
+  document.getElementById('pName').textContent = currentUser.name;
+  document.getElementById('pIsland').textContent = currentUser.island;
+  document.getElementById('pRole').innerHTML = (currentUser.role === 'Administrateur' ? '⚙️' : '🌿') + ' ' + currentUser.role;
+
+  const libCount = Object.keys(currentUser.library).length;
+  const totalHours = Object.values(currentUser.library).reduce((a, b) => a + (b.playtime || 0), 0);
+  const totalTrophies = Object.values(currentUser.library).reduce((a, b) => a + (b.earnedTrophies?.length || 0), 0);
+
+  document.getElementById('pStats').innerHTML = `
+    <div class="p-stat"><div class="sv">${libCount}</div><div class="sl">Jeux</div></div>
+    <div class="p-stat"><div class="sv">${totalHours}h</div><div class="sl">Jeu total</div></div>
+    <div class="p-stat"><div class="sv">${totalTrophies}</div><div class="sl">Trophées</div></div>
+  `;
+
+  // Update nav
+  document.getElementById('navAuthBtn').innerHTML = `<a href="profile.html" class="active" style="color:var(--green-dark)!important;font-weight:800!important;">${currentUser.avatar} ${currentUser.name}</a>`;
+
+  renderLibrary();
+}
+
+/* ── RENDER LIBRARY ── */
+function renderLibrary() {
+  const grid = document.getElementById('libraryGrid');
+  const lib = currentUser.library;
+  const keys = Object.keys(lib);
+
+  if (!keys.length) {
+    grid.innerHTML = `
+      <div class="empty-lib">
+        <span class="e-emoji">🏝️</span>
+        <h3>Ta bibliothèque est vide !</h3>
+        <p>Explore l'accueil et ajoute des jeux à ta collection.</p>
+        <a href="index.html">🎮 Découvrir les jeux →</a>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  keys.forEach((gid, idx) => {
+    const entry = lib[gid];
+    const game = GAMES_DATA[gid];
+    if (!game) return;
+    const deathDate = randomDeathDate();
+
+    const trophiesHTML = game.trophies.map((t, i) => {
+      const earned = entry.earnedTrophies?.includes(i);
+      return `<span class="lib-trophy${earned ? '' : ' locked'}">${t.icon} ${t.name}</span>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'lib-card';
+    card.style.animationDelay = (idx * 0.07) + 's';
+    card.innerHTML = `
+      <div class="lib-card-top">
+        <div class="lib-emoji">${game.emoji}</div>
+        <div class="lib-info">
+          <div class="lib-title">${game.title}</div>
+          <div class="lib-genre">${game.genre} · ${entry.gender}</div>
+        </div>
+      </div>
+      <div class="lib-card-meta">
+        <div class="lib-meta-item"><div class="mv">${entry.playtime}h</div><div class="ml">Temps</div></div>
+        <div class="lib-meta-item"><div class="mv">${entry.addedDate}</div><div class="ml">Ajouté le</div></div>
+        <div class="lib-meta-item"><div class="mv" title="${entry.notes || '—'}">${entry.notes ? '📝' : '—'}</div><div class="ml">Notes</div></div>
+      </div>
+      <div class="lib-trophies">${trophiesHTML}</div>
+      <span class="death-badge">💀 Dernière mort : ${deathDate}</span>
+      <div class="lib-actions">
+        <button class="lib-btn lib-btn-edit" onclick="openEdit(${gid})">✏️ Modifier</button>
+        <button class="lib-btn lib-btn-del" onclick="removeGame(${gid})">🗑️ Retirer</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ── EDIT MODAL ── */
+function openEdit(gid) {
+  editingGameId = gid;
+  const entry = currentUser.library[gid];
+  document.getElementById('editPlaytime').value = entry.playtime;
+  document.getElementById('editGender').value = entry.gender;
+  document.getElementById('editNotes').value = entry.notes || '';
+  document.getElementById('editOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEdit() {
+  document.getElementById('editOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  editingGameId = null;
+}
+
+function saveEdit() {
+  const entry = currentUser.library[editingGameId];
+  entry.playtime = parseInt(document.getElementById('editPlaytime').value) || entry.playtime;
+  entry.gender = document.getElementById('editGender').value;
+  entry.notes = document.getElementById('editNotes').value;
+  closeEdit();
+  renderLibrary();
+  showProfile();
+  showToast('✅ Modifications sauvegardées !', 'success');
+}
+
+function removeGame(gid) {
+  if (!confirm('Retirer ce jeu de ta bibliothèque ?')) return;
+  delete currentUser.library[gid];
+  renderLibrary();
+  showProfile();
+  showToast('🗑️ Jeu retiré de ta bibliothèque.', '');
+}
+
+document.getElementById('editOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('editOverlay')) closeEdit();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEdit(); });
+
+/* ── TOAST ── */
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2800);
+}
+
+/* ── INIT ── */
+document.getElementById('authView').style.display = 'block';
+document.getElementById('profileView').style.display = 'none';
+</script>
+</body>
+</html>
+
