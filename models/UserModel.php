@@ -38,4 +38,10 @@ class UserModel extends Model
         return (int)$this->db->lastInsertId();
     }
 
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
+
 }

@@ -77,4 +77,34 @@ class AuthController
         require ROOT_PATH . '/views/auth/login.php';
     }
 
+    public function handleDeleteProfile(): void
+    {
+        Auth::requireLogin();
+
+
+        $password = $_POST['password'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $errors   = [];
+
+        $currentUser = Auth::currentUser();
+        $user        = $this->userModel->findById($currentUser['id']);
+
+        if (empty($password)) {
+            $errors[] = 'Veuillez confirmer votre mot de passe.';
+        } elseif ($email !== $user['email']) {
+            $errors[] = 'Email incorrect.';
+        } elseif (!password_verify($password, $user['password'])) {
+            $errors[] = 'Mot de passe incorrect.';
+        }
+
+        if (empty($errors)) {
+            $this->userModel->delete($currentUser['id']);
+            Auth::logout();
+            header('Location: ' . BASE_URL . 'register.php');
+            exit;
+        }
+
+        require ROOT_PATH . '/views/auth/profile.php';
+    }
+
 }
