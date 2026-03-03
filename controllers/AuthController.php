@@ -1,15 +1,15 @@
 <?php
 
 require_once ROOT_PATH . '/core/Auth.php';
-require_once ROOT_PATH . '/models/UserModel.php';
+require_once ROOT_PATH . '/models/ProfileModel.php';
 
 class AuthController
 {
-    private UserModel $userModel;
+    private ProfileModel $userModel;
 
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->userModel = new ProfileModel();
     }
 
     public function handleRegister(): void

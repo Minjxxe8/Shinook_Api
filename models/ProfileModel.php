@@ -4,7 +4,7 @@
 require_once ROOT_PATH . '/core/Auth.php';
 require_once ROOT_PATH . '/core/Model.php';
 
-class UserModel extends Model
+class ProfileModel extends Model
 {
     protected string $table = 'users';
 
@@ -36,6 +36,35 @@ class UserModel extends Model
             'role' => ROLE_USER,
         ]);
         return (int)$this->db->lastInsertId();
+    }
+
+    public function update(int $id, string $username, string $email, ?string $newPassword): bool
+    {
+        if ($newPassword !== null) {
+            $hash = password_hash($newPassword, PASSWORD_BCRYPT);
+            $stmt = $this->db->prepare("
+            UPDATE users 
+            SET username = :username, email = :email, password = :password
+            WHERE id = :id
+        ");
+            return $stmt->execute([
+                'username' => $username,
+                'email'    => $email,
+                'password' => $hash,
+                'id'       => $id,
+            ]);
+        }
+
+        $stmt = $this->db->prepare("
+        UPDATE users 
+        SET username = :username, email = :email
+        WHERE id = :id
+    ");
+        return $stmt->execute([
+            'username' => $username,
+            'email'    => $email,
+            'id'       => $id,
+        ]);
     }
 
     public function delete(int $id): bool
