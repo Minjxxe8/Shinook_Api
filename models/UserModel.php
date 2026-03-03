@@ -35,12 +35,7 @@ class UserModel extends Model
             'password' => $hash,
             'role' => ROLE_USER,
         ]);
-        $id = (int)$this->db->lastInsertId();
-        error_log('Last insert ID: ' . $id);
-        error_log('DB file: ' . ROOT_PATH . '/sql/database.sqlite');
-        error_log('DB exists: ' . (file_exists(ROOT_PATH . '/sql/database.sqlite') ? 'yes' : 'no'));
-
-        return $id;
+        return (int)$this->db->lastInsertId();
     }
 
 }

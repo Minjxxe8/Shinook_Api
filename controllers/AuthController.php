@@ -50,4 +50,31 @@ class AuthController
         require ROOT_PATH . '/views/auth/register.php';
     }
 
+    public function handleLogin(): void
+    {
+        $email    = trim($_POST['email']    ?? '');
+        $password = $_POST['password']      ?? '';
+        $errors   = [];
+
+        if (empty($email) || empty($password)) {
+            $errors[] = 'Tous les champs sont requis.';
+        }
+
+        if (empty($errors)) {
+            $user = $this->userModel->findByEmail($email);
+
+            if (!$user || !password_verify($password, $user['password'])) {
+                $errors[] = 'Email ou mot de passe incorrect.';
+            }
+        }
+
+        if (empty($errors)) {
+            Auth::login($user);
+            header('Location: ' . BASE_URL . 'profile.php');
+            exit;
+        }
+
+        require ROOT_PATH . '/views/auth/login.php';
+    }
+
 }
