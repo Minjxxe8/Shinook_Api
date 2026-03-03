@@ -12,6 +12,9 @@
             <th>Note</th>
             <th>Difficulté</th>
             <th>Prix</th>
+            <?php if (Auth::isLoggedIn()): ?>
+                <th>Action</th>
+            <?php endif; ?>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +26,19 @@
                 <td><?= htmlspecialchars($game['rating']) ?></td>
                 <td><?= htmlspecialchars($game['difficulty']) ?></td>
                 <td><?= htmlspecialchars($game['price']) ?> €</td>
+                <?php if (Auth::isLoggedIn()): ?>
+                    <td>
+                        <?php if (in_array($game['id'], $ownedGameIds)): ?>
+                            <span>Déjà dans ma liste</span>
+                        <?php else: ?>
+                            <form method="POST" action="<?= BASE_URL ?>usergame.php">
+                                <input type="hidden" name="action"  value="add">
+                                <input type="hidden" name="game_id" value="<?= $game['id'] ?>">
+                                <button type="submit">Ajouter</button>
+                            </form>
+                        <?php endif; ?>
+                    </td>
+                <?php endif; ?>
             </tr>
         <?php endforeach; ?>
         </tbody>

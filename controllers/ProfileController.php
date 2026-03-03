@@ -2,20 +2,20 @@
 
 require_once ROOT_PATH . '/core/Auth.php';
 require_once ROOT_PATH . '/models/ProfileModel.php';
-//require_once ROOT_PATH . '/models/UserGameModel.php';
-//require_once ROOT_PATH . '/models/GameModel.php';
+require_once ROOT_PATH . '/models/UserGameModel.php';
+require_once ROOT_PATH . '/models/GameModel.php';
 
 class ProfileController
 {
     private ProfileModel $userModel;
     private UserGameModel $userGameModel;
-    //private GameModel $gameModel;
+    private GameModel $gameModel;
 
     public function __construct()
     {
         Auth::requireLogin();
         $this->userModel = new ProfileModel();
-        //$this->userGameModel = new UserGameModel();
+        $this->userGameModel = new UserGameModel();
         //$this->gameModel = new GameModel();
     }
 
@@ -25,9 +25,8 @@ class ProfileController
 
         $currentUser = Auth::currentUser();
         $user = $this->userModel->findById($currentUser['id']);
-
-       /* $userGames = $this->userGameModel->findByUser($currentUser['id']);
-        $achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
+        $games = $this->userGameModel->findByUser($currentUser['id']);
+        /*$achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
         $allGames = $this->gameModel->findAll();*/
 
         require ROOT_PATH . '/views/profile/profile.php';
