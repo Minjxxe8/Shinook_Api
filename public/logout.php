@@ -5,10 +5,8 @@ require_once ROOT_PATH . '/controllers/AuthController.php';
 
 $controller = new AuthController();
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $controller->handleRegister();
+    $controller->handleLogout();
 } else {
-    //$controller->showRegister();
-    require ROOT_PATH . '/views/auth/register.php';
+    require ROOT_PATH . '/views/auth/logout.php';
 }

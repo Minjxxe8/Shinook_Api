@@ -77,6 +77,13 @@ class AuthController
         require ROOT_PATH . '/views/auth/login.php';
     }
 
+    public function handleLogout(): void
+    {
+        Auth::logout();
+        header('Location: ' . BASE_URL . 'login.php');
+        exit;
+    }
+
     public function handleDeleteProfile(): void
     {
         Auth::requireLogin();
