@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
      email      TEXT UNIQUE NOT NULL,
      password   TEXT NOT NULL,
      role       TEXT DEFAULT 'villageois',
+     banned     INTEGER DEFAULT 0,
      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,6 +18,7 @@ CREATE TABLE IF NOT EXISTS games (
      description TEXT,
      price       REAL NOT NULL,
      picture     TEXT,
+     banned      INTEGER DEFAULT 0,
      created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -70,6 +72,7 @@ CREATE TABLE IF NOT EXISTS users_trophies (
      FOREIGN KEY (user_id) REFERENCES users(id),
      FOREIGN KEY (trophy_id) REFERENCES trophies(id)
 );
+
 
 /* ── JEUX ── */
 INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating) SELECT 'Animal Crossing', 1, 'Partez à la découverte d''une forêt ancienne peuplée de créatures mystiques. Forgez des alliances, récoltez des ressources et repoussez les ombres qui envahissent l''île.', 59.99, 'jeux/animalcrossing.jpg', 'RPG', 2020, 4.8 WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Animal Crossing');

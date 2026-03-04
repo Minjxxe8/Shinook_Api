@@ -26,6 +26,19 @@ class Database
                 if (file_exists($initFile)) {
                     self::$instance->exec(file_get_contents($initFile));
                 }
+
+                // Migrations : ajout des colonnes si elles n'existent pas encore
+                $migrations = [
+                    "ALTER TABLE users ADD COLUMN banned INTEGER DEFAULT 0",
+                    "ALTER TABLE games ADD COLUMN banned INTEGER DEFAULT 0",
+                ];
+                foreach ($migrations as $migration) {
+                    try {
+                        self::$instance->exec($migration);
+                    } catch (PDOException $e) {
+                        // La colonne existe déjà, on ignore
+                    }
+                }
             } catch (PDOException $e) {
                 die('Connexion échouée : ' . $e->getMessage());
             }

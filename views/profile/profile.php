@@ -110,6 +110,133 @@
             <?php endif; ?>
         </div>
 
+        <?php if (Auth::isAdmin()): ?>
+        <div id="admin" class="admin-panel">
+            <div class="admin-panel-header">
+                <span class="admin-badge">🔑 Team Nook</span>
+                <h2 class="admin-title">Panneau d'administration</h2>
+                <p class="admin-subtitle">Gère les utilisateurs et les jeux de l'île</p>
+            </div>
+
+            <?php if ($adminError === 'self'): ?>
+                <div class="admin-alert">⚠️ Tu ne peux pas te bannir toi-même !</div>
+            <?php elseif ($adminError === 'admin'): ?>
+                <div class="admin-alert">⚠️ Impossible de bannir un autre administrateur.</div>
+            <?php endif; ?>
+
+            <!-- Gestion des utilisateurs -->
+            <div class="admin-section">
+                <div class="admin-section-title">👥 Gestion des utilisateurs</div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($adminUsers as $u): ?>
+                                <?php $isSelf = ((int)$u['id'] === (int)$currentUser['id']); ?>
+                                <?php $isOtherAdmin = ($u['role'] === ROLE_ADMIN && !$isSelf); ?>
+                                <tr class="<?= $u['banned'] ? 'row-banned' : '' ?>">
+                                    <td><?= (int)$u['id'] ?></td>
+                                    <td>
+                                        <strong><?= htmlspecialchars($u['username']) ?></strong>
+                                        <?php if ($isSelf): ?> <span class="badge-self">Moi</span><?php endif; ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($u['email']) ?></td>
+                                    <td>
+                                        <span class="badge-role <?= $u['role'] === ROLE_ADMIN ? 'badge-admin' : 'badge-user' ?>">
+                                            <?= $u['role'] === ROLE_ADMIN ? '🔑' : '🌿' ?> <?= htmlspecialchars($u['role']) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?php if ($u['banned']): ?>
+                                            <span class="status-banned">🚫 Banni</span>
+                                        <?php else: ?>
+                                            <span class="status-active">✅ Actif</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if (!$isSelf && !$isOtherAdmin): ?>
+                                            <form method="POST" action="<?= BASE_URL ?>admin.php" style="display:inline;">
+                                                <input type="hidden" name="type" value="user">
+                                                <input type="hidden" name="user_id" value="<?= (int)$u['id'] ?>">
+                                                <?php if ($u['banned']): ?>
+                                                    <input type="hidden" name="action" value="unban">
+                                                    <button type="submit" class="admin-btn admin-btn-unban">✅ Débannir</button>
+                                                <?php else: ?>
+                                                    <input type="hidden" name="action" value="ban">
+                                                    <button type="submit" class="admin-btn admin-btn-ban">🚫 Bannir</button>
+                                                <?php endif; ?>
+                                            </form>
+                                        <?php else: ?>
+                                            <span style="color:var(--text-light);font-size:0.8rem;">—</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Gestion des jeux -->
+            <div class="admin-section">
+                <div class="admin-section-title">🎮 Gestion des jeux</div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Jeu</th>
+                                <th>Genre</th>
+                                <th>Année</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($adminGames as $g): ?>
+                                <tr class="<?= $g['banned'] ? 'row-banned' : '' ?>">
+                                    <td><?= (int)$g['id'] ?></td>
+                                    <td><strong><?= htmlspecialchars($g['name']) ?></strong></td>
+                                    <td><?= htmlspecialchars($g['genre']) ?></td>
+                                    <td><?= (int)$g['year'] ?></td>
+                                    <td>
+                                        <?php if ($g['banned']): ?>
+                                            <span class="status-banned">🚫 Banni</span>
+                                        <?php else: ?>
+                                            <span class="status-active">✅ Actif</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="<?= BASE_URL ?>admin.php" style="display:inline;">
+                                            <input type="hidden" name="type" value="game">
+                                            <input type="hidden" name="game_id" value="<?= (int)$g['id'] ?>">
+                                            <?php if ($g['banned']): ?>
+                                                <input type="hidden" name="action" value="unban">
+                                                <button type="submit" class="admin-btn admin-btn-unban">✅ Restaurer</button>
+                                            <?php else: ?>
+                                                <input type="hidden" name="action" value="ban">
+                                                <button type="submit" class="admin-btn admin-btn-ban">🚫 Bannir</button>
+                                            <?php endif; ?>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <div class="auth-card" style="max-width:700px;margin:0 auto;">
             <div class="auth-card-title">✏️ Modifier mon profil</div>
 
@@ -147,6 +274,8 @@
 
             <a href="<?= BASE_URL ?>delete.php" class="btn-full" style="margin-top:0.8rem;background:#c0392b;box-shadow:0 4px 0 #922b21;text-decoration:none;display:flex;justify-content:center;">Supprimer mon compte</a>
         </div>
+
+
     </div>
 </div>
 

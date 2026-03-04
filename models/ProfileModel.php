@@ -73,4 +73,16 @@ class ProfileModel extends Model
         return $stmt->execute(['id' => $id]);
     }
 
+    public function findAll(): array
+    {
+        $stmt = $this->db->query("SELECT id, username, email, role, banned, created_at FROM users ORDER BY created_at DESC");
+        return $stmt->fetchAll();
+    }
+
+    public function setBanned(int $id, int $banned): bool
+    {
+        $stmt = $this->db->prepare("UPDATE users SET banned = :banned WHERE id = :id");
+        return $stmt->execute(['banned' => $banned, 'id' => $id]);
+    }
+
 }

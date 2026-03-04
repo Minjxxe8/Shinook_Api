@@ -65,6 +65,9 @@ class AuthController
 
             if (!$user || !password_verify($password, $user['password'])) {
                 $errors[] = 'Email ou mot de passe incorrect.';
+            } elseif (!empty($user['banned']) && (int)$user['banned'] === 1) {
+                $errors[] = '🚫 Ton compte a été banni de l\'île. Contacte un administrateur.';
+                $user = null;
             }
         }
 

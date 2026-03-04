@@ -19,7 +19,7 @@ class ProfileController
         $this->userModel     = new ProfileModel();
         $this->userGameModel = new UserGameModel();
         $this->trophyModel   = new TrophyModel();
-        //$this->gameModel = new GameModel();
+        $this->gameModel     = new GameModel();
     }
 
     public function showProfile(): void
@@ -34,8 +34,16 @@ class ProfileController
         // Nombre total de trophées des jeux dans la bibliothèque de l'utilisateur
         $totalTrophies  = $this->trophyModel->countByUserLibrary($currentUser['id']);
         $libraryTrophies = $this->trophyModel->findAllByUserLibrary($currentUser['id']);
-        /*$achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
-        $allGames = $this->gameModel->findAll();*/
+
+        // Données admin
+        $adminUsers = [];
+        $adminGames = [];
+        $adminError = $_GET['admin_error'] ?? null;
+
+        if (Auth::isAdmin()) {
+            $adminUsers = $this->userModel->findAll();
+            $adminGames = $this->gameModel->findAllForAdmin();
+        }
 
         require ROOT_PATH . '/views/profile/profile.php';
     }

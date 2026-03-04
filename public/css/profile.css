@@ -588,3 +588,178 @@
   }
   .trophy-chip .t-icon { font-size: 1.2rem; }
   .trophy-chip .t-name { line-height: 1.3; }
+
+  /* ── ADMIN PANEL ── */
+  .admin-panel {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+  }
+
+  .admin-panel-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent2), #f0b429);
+    color: var(--brown);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.9rem;
+    border-radius: 50px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 3px 0 #c8930a;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .admin-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    color: var(--brown);
+    margin-bottom: 0.2rem;
+  }
+
+  .admin-subtitle {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .admin-alert {
+    background: #fff9e6;
+    border: 2px solid var(--accent2);
+    color: var(--brown);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .admin-section {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 2.5px solid var(--sand);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.25s;
+    animation: cardIn 0.5s ease both;
+  }
+  .admin-section:hover { border-color: var(--green-light); }
+
+  .admin-section-title {
+    background: linear-gradient(135deg, var(--sand) 0%, #fdefd8 100%);
+    padding: 0.9rem 1.5rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    color: var(--brown);
+    border-bottom: 2px solid var(--sand);
+  }
+
+  .admin-table-wrap { overflow-x: auto; }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .admin-table thead th {
+    background: var(--cream);
+    color: var(--text-light);
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.65rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--sand);
+  }
+
+  .admin-table tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1.5px solid #faf0e0;
+    vertical-align: middle;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .admin-table tbody tr:last-child td { border-bottom: none; }
+  .admin-table tbody tr { transition: background 0.15s; }
+  .admin-table tbody tr:hover { background: rgba(93,187,99,0.05); }
+
+  .row-banned { background: #fff5f5 !important; }
+  .row-banned td { opacity: 0.55; }
+
+  .badge-self {
+    background: var(--sky);
+    color: var(--brown);
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 0.1rem 0.5rem;
+    border-radius: 50px;
+    margin-left: 0.3rem;
+    vertical-align: middle;
+  }
+
+  .badge-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.2rem 0.65rem;
+    border-radius: 50px;
+  }
+  .badge-admin {
+    background: rgba(255,209,102,0.25);
+    color: #7a5000;
+    border: 1.5px solid rgba(255,209,102,0.6);
+  }
+  .badge-user {
+    background: rgba(93,187,99,0.12);
+    color: var(--green-dark);
+    border: 1.5px solid rgba(93,187,99,0.3);
+  }
+
+  .status-banned { color: #c0392b; font-weight: 800; font-size: 0.82rem; }
+  .status-active  { color: var(--green-dark); font-weight: 800; font-size: 0.82rem; }
+
+  .admin-btn {
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.78rem;
+    padding: 0.38rem 0.9rem;
+    transition: transform 0.1s, opacity 0.15s;
+    white-space: nowrap;
+  }
+  .admin-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .admin-btn:active { transform: translateY(2px); }
+
+  .admin-btn-ban {
+    background: #e74c3c;
+    color: white;
+    box-shadow: 0 3px 0 #a93226;
+  }
+  .admin-btn-ban:active { box-shadow: 0 1px 0 #a93226; }
+
+  .admin-btn-unban {
+    background: var(--green);
+    color: white;
+    box-shadow: 0 3px 0 var(--green-dark);
+  }
+  .admin-btn-unban:active { box-shadow: 0 1px 0 var(--green-dark); }
+
+  @media (max-width: 640px) {
+    .admin-table { font-size: 0.78rem; }
+    .admin-table thead th,
+    .admin-table tbody td { padding: 0.5rem 0.6rem; }
+    .admin-btn { font-size: 0.72rem; padding: 0.3rem 0.65rem; }
+  }
