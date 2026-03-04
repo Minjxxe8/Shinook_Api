@@ -10,13 +10,14 @@ class TrophyModel extends Model
     public function findByGame(int $gameId): array
     {
         $stmt = $this->db->prepare("
-            SELECT id, name, icon, description
+            SELECT id, icon, name, description
             FROM trophies
             WHERE game_id = :game_id
             ORDER BY id ASC
         ");
         $stmt->execute(['game_id' => $gameId]);
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
+        return array_map([$this, 'cleanTrophyName'], $rows);
     }
 
     public function findEarnedByUserAndGame(int $userId, int $gameId): array
@@ -34,7 +35,7 @@ class TrophyModel extends Model
     public function countByUserLibrary(int $userId): int
     {
         $stmt = $this->db->prepare("
-            SELECT COUNT(t.id) AS total
+            SELECT COUNT(DISTINCT t.id) AS total
             FROM trophies t
             INNER JOIN users_game ug ON ug.game_id = t.game_id
             WHERE ug.user_id = :user_id
@@ -46,7 +47,7 @@ class TrophyModel extends Model
     public function findAllByUserLibrary(int $userId): array
     {
         $stmt = $this->db->prepare("
-            SELECT t.id, t.icon, t.name, t.game_id, g.name AS game_name
+            SELECT DISTINCT t.id, t.icon, t.name, t.game_id, g.name AS game_name
             FROM trophies t
             INNER JOIN users_game ug ON ug.game_id = t.game_id
             INNER JOIN games g ON g.id = t.game_id
@@ -54,7 +55,18 @@ class TrophyModel extends Model
             ORDER BY t.game_id ASC, t.id ASC
         ");
         $stmt->execute(['user_id' => $userId]);
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
+        return array_map([$this, 'cleanTrophyName'], $rows);
+    }
+
+    private function cleanTrophyName(array $trophy): array
+    {
+        $icon = trim($trophy['icon'] ?? '');
+        $name = trim($trophy['name'] ?? '');
+        if ($icon !== '' && str_starts_with($name, $icon)) {
+            $trophy['name'] = trim(mb_substr($name, mb_strlen($icon)));
+        }
+        return $trophy;
     }
     public function findAllEarnedByUser(int $userId): array
     {
