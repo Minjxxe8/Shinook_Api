@@ -32,7 +32,8 @@ class ProfileController
         $errors = [];
 
         // Nombre total de trophées des jeux dans la bibliothèque de l'utilisateur
-        $totalTrophies = $this->trophyModel->countByUserLibrary($currentUser['id']);
+        $totalTrophies  = $this->trophyModel->countByUserLibrary($currentUser['id']);
+        $libraryTrophies = $this->trophyModel->findAllByUserLibrary($currentUser['id']);
         /*$achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
         $allGames = $this->gameModel->findAll();*/
 
@@ -98,8 +99,9 @@ class ProfileController
             exit;
         }
 
-        $games         = $this->userGameModel->findByUser($user['id']);
-        $totalTrophies = $this->trophyModel->countByUserLibrary($user['id']);
+        $games           = $this->userGameModel->findByUser($user['id']);
+        $totalTrophies   = $this->trophyModel->countByUserLibrary($user['id']);
+        $libraryTrophies = $this->trophyModel->findAllByUserLibrary($user['id']);
         require ROOT_PATH . '/views/profile/profile.php';
     }
 }

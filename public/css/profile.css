@@ -567,3 +567,24 @@
     nav { padding: 0 1rem; }
     .page-wrap { padding: 2rem 1rem 3rem; }
   }
+
+  /* ── TROPHÉES ── */
+  .trophies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .trophy-chip {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(61,43,31,0.06);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .trophy-chip .t-icon { font-size: 1.2rem; }
+  .trophy-chip .t-name { line-height: 1.3; }

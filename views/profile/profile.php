@@ -86,11 +86,28 @@
             <div class="section-title">🏆 Mes trophées</div>
         </div>
 
-        <div class="auth-card" style="max-width:700px;margin:0 auto 3rem;display:flex;justify-content:center;">
-            <div class="p-stat" style="min-width:unset;">
-                <div class="sv"><?= (int)$totalTrophies ?></div>
-                <div class="sl">Trophées total</div>
+
+        <div class="auth-card" style="max-width:700px;margin:0 auto 3rem;">
+            <div style="display:flex;justify-content:center;margin-bottom:<?= !empty($libraryTrophies) ? '1.5rem' : '0' ?>;">
+                <div class="p-stat" style="min-width:unset;">
+                    <div class="sv"><?= (int)$totalTrophies ?></div>
+                    <div class="sl">Trophées total</div>
+                </div>
             </div>
+            <?php if (!empty($libraryTrophies)): ?>
+                <div class="trophies-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <?php foreach ($libraryTrophies as $trophy): ?>
+                        <div class="trophy-chip">
+                            <span class="t-icon"><?= htmlspecialchars($trophy['icon']) ?></span>
+                            <span class="t-name"><?= htmlspecialchars($trophy['name']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div style="text-align:center;color:var(--text-light);font-weight:700;">
+                    Ajoute des jeux à ta bibliothèque pour débloquer des trophées 🏝️
+                </div>
+            <?php endif; ?>
         </div>
 
         <div class="auth-card" style="max-width:700px;margin:0 auto;">

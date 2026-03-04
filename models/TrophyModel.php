@@ -19,9 +19,6 @@ class TrophyModel extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Récupère les IDs de trophées déjà obtenus par un utilisateur pour un jeu donné.
-     */
     public function findEarnedByUserAndGame(int $userId, int $gameId): array
     {
         $stmt = $this->db->prepare("
@@ -34,9 +31,6 @@ class TrophyModel extends Model
         return array_column($stmt->fetchAll(), 'id');
     }
 
-    /**
-     * Compte tous les trophées des jeux présents dans la bibliothèque de l'utilisateur.
-     */
     public function countByUserLibrary(int $userId): int
     {
         $stmt = $this->db->prepare("
@@ -47,6 +41,20 @@ class TrophyModel extends Model
         ");
         $stmt->execute(['user_id' => $userId]);
         return (int)$stmt->fetchColumn();
+    }
+
+    public function findAllByUserLibrary(int $userId): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT t.id, t.icon, t.name, t.game_id, g.name AS game_name
+            FROM trophies t
+            INNER JOIN users_game ug ON ug.game_id = t.game_id
+            INNER JOIN games g ON g.id = t.game_id
+            WHERE ug.user_id = :user_id
+            ORDER BY t.game_id ASC, t.id ASC
+        ");
+        $stmt->execute(['user_id' => $userId]);
+        return $stmt->fetchAll();
     }
     public function findAllEarnedByUser(int $userId): array
     {
