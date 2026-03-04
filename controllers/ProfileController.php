@@ -4,18 +4,21 @@ require_once ROOT_PATH . '/core/Auth.php';
 require_once ROOT_PATH . '/models/ProfileModel.php';
 require_once ROOT_PATH . '/models/UserGameModel.php';
 require_once ROOT_PATH . '/models/GameModel.php';
+require_once ROOT_PATH . '/models/TrophyModel.php';
 
 class ProfileController
 {
     private ProfileModel $userModel;
     private UserGameModel $userGameModel;
     private GameModel $gameModel;
+    private TrophyModel $trophyModel;
 
     public function __construct()
     {
         Auth::requireLogin();
-        $this->userModel = new ProfileModel();
+        $this->userModel     = new ProfileModel();
         $this->userGameModel = new UserGameModel();
+        $this->trophyModel   = new TrophyModel();
         //$this->gameModel = new GameModel();
     }
 
@@ -24,9 +27,12 @@ class ProfileController
         Auth::requireLogin();
 
         $currentUser = Auth::currentUser();
-        $user = $this->userModel->findById($currentUser['id']);
-        $games = $this->userGameModel->findByUser($currentUser['id']);
+        $user   = $this->userModel->findById($currentUser['id']);
+        $games  = $this->userGameModel->findByUser($currentUser['id']);
         $errors = [];
+
+        // Nombre total de trophées des jeux dans la bibliothèque de l'utilisateur
+        $totalTrophies = $this->trophyModel->countByUserLibrary($currentUser['id']);
         /*$achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
         $allGames = $this->gameModel->findAll();*/
 
@@ -92,7 +98,8 @@ class ProfileController
             exit;
         }
 
-        $games = $this->userGameModel->findByUser($user['id']);
+        $games         = $this->userGameModel->findByUser($user['id']);
+        $totalTrophies = $this->trophyModel->countByUserLibrary($user['id']);
         require ROOT_PATH . '/views/profile/profile.php';
     }
 }

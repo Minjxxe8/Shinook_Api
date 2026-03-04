@@ -88,7 +88,7 @@
 
         <div class="auth-card" style="max-width:700px;margin:0 auto 3rem;display:flex;justify-content:center;">
             <div class="p-stat" style="min-width:unset;">
-                <div class="sv">0</div>
+                <div class="sv"><?= (int)$totalTrophies ?></div>
                 <div class="sl">Trophées total</div>
             </div>
         </div>
