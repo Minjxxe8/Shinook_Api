@@ -1,12 +1,84 @@
-<?php if (!empty($errors)): ?>
-    <p><?= $errors[0] ?></p>
-<?php endif; ?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shinook – Inscription</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
 
-<!-- Le formulaire qui envoie vers register.php en POST -->
-<form method="POST" action="register.php">
-    <input type="text"     name="username"    placeholder="Nom d'utilisateur">
-    <input type="email"    name="email"       placeholder="Email">
-    <input type="password" name="password"    placeholder="Mot de passe">
-    <input type="password" name="confirm"     placeholder="Confirmer le mot de passe">
-    <button>S'inscrire</button>
-</form>
+<div class="leaf-bg" id="leafBg"></div>
+
+<nav>
+    <a href="<?= BASE_URL ?>game.php" class="nav-logo">
+        <img src="icons/Shinook.png" alt="Shinook" class="logo">
+        Shinook
+    </a>
+    <ul class="nav-links">
+        <li><a href="<?= BASE_URL ?>game.php">Accueil</a></li>
+        <li><a href="<?= BASE_URL ?>login.php">Connexion</a></li>
+        <li><a href="<?= BASE_URL ?>register.php" class="active">Inscription</a></li>
+    </ul>
+</nav>
+
+<div class="page-wrap">
+    <div class="auth-header">
+        <img src="icons/profil.jpg" alt="Profil" class="welcome-emoji">
+        <h1>Rejoins l'île !</h1>
+        <p>Crée ton compte pour démarrer ta collection de jeux.</p>
+    </div>
+
+    <div class="auth-container" style="grid-template-columns:minmax(280px,620px);justify-content:center;">
+        <div class="auth-card">
+            <div class="auth-card-title">🏝️ Créer un compte</div>
+
+            <?php if (!empty($errors)): ?>
+                <div style="margin-bottom:1rem;color:#c0392b;font-weight:700;">
+                    <?php foreach ($errors as $error): ?>
+                        <div>• <?= htmlspecialchars($error) ?></div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" action="<?= BASE_URL ?>register.php">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm">Confirmer le mot de passe</label>
+                    <input type="password" id="confirm" name="confirm" required>
+                </div>
+
+                <button type="submit" class="btn-full" style="background:var(--brown);box-shadow:0 4px 0 #5c3d28;">Poser les fondations !</button>
+            </form>
+
+            <div class="form-divider">déjà membre ?</div>
+            <a href="<?= BASE_URL ?>login.php" class="btn-full" style="display:flex;justify-content:center;align-items:center;text-decoration:none;">Se connecter</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <strong>Shinook</strong> — Fait par Elisabeth ROBL, Léna Ricard et Emma De Oliveira &nbsp;|&nbsp; Tom Nook vous surveille 🦝
+</footer>
+
+<script src="js/stickers.js"></script>
+<script>
+initFloatingStickers({ count: 15 });
+</script>
+</body>
+</html>

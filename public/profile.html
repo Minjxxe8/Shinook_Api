@@ -224,10 +224,6 @@ function randomDate() {
   const d = new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 400);
   return d.toLocaleDateString('fr-FR');
 }
-function randomDeathDate() {
-  const d = new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 200);
-  return d.toLocaleDateString('fr-FR');
-}
 
 /* ── AUTH LOGIC ── */
 function doLogin(type = 'player') {
@@ -329,7 +325,6 @@ function renderLibrary() {
     const entry = lib[gid];
     const game = GAMES_DATA[gid];
     if (!game) return;
-    const deathDate = randomDeathDate();
 
     const trophiesHTML = game.trophies.map((t, i) => {
       const earned = entry.earnedTrophies?.includes(i);
@@ -353,7 +348,6 @@ function renderLibrary() {
         <div class="lib-meta-item"><div class="mv" title="${entry.notes || '—'}">${entry.notes ? '📝' : '—'}</div><div class="ml">Notes</div></div>
       </div>
       <div class="lib-trophies">${trophiesHTML}</div>
-      <span class="death-badge">💀 Dernière mort : ${deathDate}</span>
       <div class="lib-actions">
         <button class="lib-btn lib-btn-edit" onclick="openEdit(${gid})">✏️ Modifier</button>
         <button class="lib-btn lib-btn-del" onclick="removeGame(${gid})">🗑️ Retirer</button>

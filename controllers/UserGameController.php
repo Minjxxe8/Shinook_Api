@@ -7,6 +7,16 @@ class UserGameController
 {
     private UserGameModel $userGameModel;
 
+    private function getSafeRedirect(string $default = 'game.php'): string
+    {
+        $allowed = ['game.php', 'profile.php'];
+        $redirect = $_POST['redirect'] ?? $default;
+        if (!in_array($redirect, $allowed, true)) {
+            $redirect = $default;
+        }
+        return BASE_URL . $redirect;
+    }
+
     public function __construct()
     {
         $this->userGameModel = new UserGameModel();
@@ -18,7 +28,7 @@ class UserGameController
         $gameId = (int)($_POST['game_id'] ?? 0);
 
         if ($gameId <= 0) {
-            header('Location: ' . BASE_URL . 'game.php');
+            header('Location: ' . $this->getSafeRedirect('game.php'));
             exit;
         }
 
@@ -26,7 +36,7 @@ class UserGameController
             $this->userGameModel->add(Auth::currentUser()['id'], $gameId);
         }
 
-        header('Location: ' . BASE_URL . 'game.php');
+        header('Location: ' . $this->getSafeRedirect('game.php'));
         exit;
     }
 
@@ -36,12 +46,12 @@ class UserGameController
         $gameId = (int)($_POST['game_id'] ?? 0);
 
         if ($gameId <= 0) {
-            header('Location: ' . BASE_URL . 'profile.php');
+            header('Location: ' . $this->getSafeRedirect('profile.php'));
             exit;
         }
 
         $this->userGameModel->removeByUserAndGame(Auth::currentUser()['id'], $gameId);
-        header('Location: ' . BASE_URL . 'profile.php');
+        header('Location: ' . $this->getSafeRedirect('profile.php'));
         exit;
     }
 }

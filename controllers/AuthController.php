@@ -111,7 +111,7 @@ class AuthController
             exit;
         }
 
-        require ROOT_PATH . '/views/auth/profile.php';
+        require ROOT_PATH . '/views/auth/delete.php';
     }
 
 }

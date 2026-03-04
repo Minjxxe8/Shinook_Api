@@ -1,2 +1,6 @@
 <?php
-echo "Serveur OK !";
+
+require_once dirname(__DIR__) . '/config/config.php';
+
+header('Location: ' . BASE_URL . 'game.php');
+exit;

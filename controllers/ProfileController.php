@@ -26,6 +26,7 @@ class ProfileController
         $currentUser = Auth::currentUser();
         $user = $this->userModel->findById($currentUser['id']);
         $games = $this->userGameModel->findByUser($currentUser['id']);
+        $errors = [];
         /*$achievements = $this->userGameModel->getUserAchievements($currentUser['id']);
         $allGames = $this->gameModel->findAll();*/
 
@@ -92,6 +93,6 @@ class ProfileController
         }
 
         $games = $this->userGameModel->findByUser($user['id']);
-        require ROOT_PATH . '/views/user/profile.php';
+        require ROOT_PATH . '/views/profile/profile.php';
     }
 }
