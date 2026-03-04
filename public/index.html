@@ -306,7 +306,6 @@ function openModal(g) {
     <div class="modal-stat"><span class="s-val">${g.trophies.length}</span><span class="s-lbl">Trophées</span></div>
   `;
 
-  // levels
   const levelsHTML = g.levels.map(l => `
     <div class="level-item">
       <span class="level-diff diff-${l.diff}">${l.diff === 'easy' ? '🌱 Facile' : l.diff === 'medium' ? '⚡ Moyen' : '🔥 Difficile'}</span>
@@ -315,12 +314,10 @@ function openModal(g) {
     </div>`).join('');
   document.getElementById('modalLevels').innerHTML = `<h3>🗺️ Niveaux</h3><div class="level-list">${levelsHTML}</div>`;
 
-  // trophies
   const trophiesHTML = g.trophies.map(t => `
     <div class="trophy-chip"><span class="t-icon">${t.icon}</span>${t.name}</div>`).join('');
   document.getElementById('modalTrophies').innerHTML = `<h3>🏆 Trophées</h3><div class="trophies-grid">${trophiesHTML}</div>`;
 
-  // actions
   let actionsHTML = '';
   if (!isLoggedIn) {
     actionsHTML = `
