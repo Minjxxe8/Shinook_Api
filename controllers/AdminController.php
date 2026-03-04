@@ -21,7 +21,7 @@ class AdminController
         Auth::requireAdmin();
 
         $targetId = (int)($_POST['user_id'] ?? 0);
-        $action   = $_POST['action'] ?? '';
+        $action = $_POST['action'] ?? '';
 
         if ($targetId <= 0) {
             header('Location: ' . BASE_URL . 'profile.php');
@@ -40,7 +40,6 @@ class AdminController
             exit;
         }
 
-        // Empêcher de bannir un autre admin
         if ($target['role'] === ROLE_ADMIN) {
             header('Location: ' . BASE_URL . 'profile.php?admin_error=admin');
             exit;
@@ -76,16 +75,6 @@ class AdminController
 
         header('Location: ' . BASE_URL . 'profile.php#admin');
         exit;
-    }
-
-    public function getUsers(): array
-    {
-        return $this->userModel->findAll();
-    }
-
-    public function getGames(): array
-    {
-        return $this->gameModel->findAll();
     }
 }
 

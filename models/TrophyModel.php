@@ -20,18 +20,6 @@ class TrophyModel extends Model
         return array_map([$this, 'cleanTrophyName'], $rows);
     }
 
-    public function findEarnedByUserAndGame(int $userId, int $gameId): array
-    {
-        $stmt = $this->db->prepare("
-            SELECT t.id
-            FROM users_trophies ut
-            JOIN trophies t ON t.id = ut.trophy_id
-            WHERE ut.user_id = :user_id AND t.game_id = :game_id
-        ");
-        $stmt->execute(['user_id' => $userId, 'game_id' => $gameId]);
-        return array_column($stmt->fetchAll(), 'id');
-    }
-
     public function countByUserLibrary(int $userId): int
     {
         $stmt = $this->db->prepare("
