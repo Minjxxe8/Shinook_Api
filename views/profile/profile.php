@@ -82,6 +82,17 @@
             <?php endif; ?>
         </div>
 
+        <div class="section-header" style="margin-top:0.5rem;">
+            <div class="section-title">🏆 Mes trophées</div>
+        </div>
+
+        <div class="auth-card" style="max-width:700px;margin:0 auto 3rem;display:flex;justify-content:center;">
+            <div class="p-stat" style="min-width:unset;">
+                <div class="sv"><?= count($games) ?></div>
+                <div class="sl">Trophées total</div>
+            </div>
+        </div>
+
         <div class="auth-card" style="max-width:700px;margin:0 auto;">
             <div class="auth-card-title">✏️ Modifier mon profil</div>
 

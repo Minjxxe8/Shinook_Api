@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -114,6 +114,13 @@
     </div>
 
     <div class="library-grid" id="libraryGrid"></div>
+
+    <!-- My Trophies -->
+    <div class="section-header" style="margin-top: 3rem; margin-bottom: 1.2rem;">
+      <div class="section-title">🏆 Mes trophés</div>
+    </div>
+
+    <div class="trophies-grid" id="trophiesGrid"></div>
 
   </div>
 
@@ -351,6 +358,54 @@ function renderLibrary() {
       <div class="lib-actions">
         <button class="lib-btn lib-btn-edit" onclick="openEdit(${gid})">✏️ Modifier</button>
         <button class="lib-btn lib-btn-del" onclick="removeGame(${gid})">🗑️ Retirer</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ── RENDER TROPHIES ── */
+function renderTrophies() {
+  const grid = document.getElementById('trophiesGrid');
+  const lib = currentUser.library;
+
+  // Collect all earned trophies
+  const allTrophies = [];
+  Object.entries(lib).forEach(([gid, entry]) => {
+    const game = GAMES_DATA[gid];
+    if (!game) return;
+
+    entry.earnedTrophies?.forEach(trophyIdx => {
+      if (game.trophies[trophyIdx]) {
+        allTrophies.push({
+          ...game.trophies[trophyIdx],
+          gameTitle: game.title,
+          gameEmoji: game.emoji,
+        });
+      }
+    });
+  });
+
+  if (!allTrophies.length) {
+    grid.innerHTML = `
+      <div class="empty-trophies">
+        <span class="e-emoji">🏜️</span>
+        <h3>Aucun trophé gagné...</h3>
+        <p>Ajoute des jeux à ta bibliothèque et joue pour débloquer des trophées !</p>
+        <a href="index.html">🎮 Découvrir les jeux →</a>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  allTrophies.forEach((trophy, idx) => {
+    const card = document.createElement('div');
+    card.className = 'trophy-card';
+    card.style.animationDelay = (idx * 0.05) + 's';
+    card.innerHTML = `
+      <div class="trophy-icon">${trophy.icon}</div>
+      <div class="trophy-info">
+        <div class="trophy-name">${trophy.name}</div>
+        <div class="trophy-game">${trophy.gameEmoji} ${trophy.gameTitle}</div>
       </div>`;
     grid.appendChild(card);
   });

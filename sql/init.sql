@@ -71,3 +71,36 @@ CREATE TABLE IF NOT EXISTS users_trophies (
      FOREIGN KEY (user_id) REFERENCES users(id),
      FOREIGN KEY (trophy_id) REFERENCES trophies(id)
 );
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Animal Crossing', 1, 'Partez à la découverte d''une forêt ancienne peuplée de créatures mystiques. Forgez des alliances, récoltez des ressources et repoussez les ombres qui envahissent l''île.', 59.99, 'jeux/animalcrossing.jpg', 'RPG', 2020, 4.8
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Animal Crossing');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Mario Kart', 1, 'Chevauche les vagues des îles tropicales dans ce jeu de surf aux décors colorés. Enchaîne les figures, débloques de nouvelles planches et affronte les champions locaux.', 49.99, 'jeux/mariokart.jpg', 'Sport', 2024, 4.5
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Mario Kart');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Zelda Breath of the Wild', 2, 'Escalade les châteaux flottants de l''île de Numéa dans ce jeu de plateforme enchanteur. Des secrets se cachent derrière chaque nuage, des trésors t''attendent au sommet.', 69.99, 'jeux/zelda.jpg', 'Aventure', 2022, 4.6
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Zelda Breath of the Wild');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Link''s Awakening', 2, 'Le vieux Tom Raton a caché des trésors aux quatre coins de l''île. Résous ses énigmes, déchiffre ses pictogrammes et retrouve les reliques perdues de l''archipel.', 44.99, 'jeux/link.jpg', 'Puzzle', 2023, 4.9
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Link''s Awakening');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Ori and the Blind Forest', 2, 'Barre ton navire à travers le lagon bleu et affronte les redoutables Pirates du Crabe. Recrute un équipage, améliore ton bateau et trouve le mythique Trésor de Tom Nook.', 39.99, 'jeux/ori.jpg', 'Aventure', 2024, 4.7
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Ori and the Blind Forest');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Yoshi''s Crafted World', 1, 'Cultive le plus beau jardin de l''archipel en résolvant des casse-têtes floraux. Croise des espèces rares, arrange des massifs et déclenche la floraison des plantes légendaires.', 34.99, 'jeux/yoshi.jpg', 'Plateforme', 2022, 4.4
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Yoshi''s Crafted World');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Mario Party', 1, 'Rejoins le groupe de K.K. Slider pour une tournée épique à travers toutes les îles ! Compose des mélodies, improvise en concert et deviens la légende musicale de l''archipel.', 59.99, 'jeux/marioparty.jpg', 'Aventure', 2024, 4.8
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Mario Party');
+
+INSERT OR IGNORE INTO games (name, difficulty, description, price, picture, genre, year, rating)
+SELECT 'Pokemon Violet', 2, 'L''île volcanique de Kaimana est en danger ! Affronte les esprits de lave, réunis les cinq artefacts ancestraux et apaise le Volcan Suprême avant l''éruption finale.', 59.99, 'jeux/pokemonviolet.jpg', 'RPG', 2023, 4.5
+WHERE NOT EXISTS (SELECT 1 FROM games WHERE name = 'Pokemon Violet');
+
