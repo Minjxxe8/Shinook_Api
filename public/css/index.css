@@ -580,7 +580,9 @@
   .level-desc { font-size: 0.8rem; color: var(--text-light); font-weight: 600; }
 
   /* Trophies section in modal */
-  .modal-trophies { margin: 1rem 0; }
+  .modal-trophies {
+    margin: 1rem 0;
+  }
   .modal-trophies h3 {
     font-family: 'Fredoka One', cursive;
     font-size: 1.1rem;
@@ -605,6 +607,7 @@
     color: var(--text);
   }
   .trophy-chip .t-icon { font-size: 1.2rem; }
+  .trophy-chip .t-name { line-height: 1.3; }
 
   .modal-actions {
     display: flex;

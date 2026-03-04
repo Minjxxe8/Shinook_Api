@@ -302,21 +302,19 @@ function openModal(g) {
   document.getElementById('modalStats').innerHTML = `
     <div class="modal-stat"><span class="s-val">${g.rating}</span><span class="s-lbl">Note</span></div>
     <div class="modal-stat"><span class="s-val">${g.year}</span><span class="s-lbl">Sortie</span></div>
-    <div class="modal-stat"><span class="s-val">${g.levels.length}</span><span class="s-lbl">Niveaux</span></div>
-    <div class="modal-stat"><span class="s-val">${g.trophies.length}</span><span class="s-lbl">Trophées</span></div>
+    <div class="modal-stat"><span class="s-val">${g.players}</span><span class="s-lbl">Joueurs</span></div>
+    ${inLib ? `<div class="modal-stat"><span class="s-val">${g.trophies.length}</span><span class="s-lbl">Trophées</span></div>` : ''}
   `;
 
-  const levelsHTML = g.levels.map(l => `
-    <div class="level-item">
-      <span class="level-diff diff-${l.diff}">${l.diff === 'easy' ? '🌱 Facile' : l.diff === 'medium' ? '⚡ Moyen' : '🔥 Difficile'}</span>
-      <span class="level-name">${l.name}</span>
-      <span class="level-desc">${l.desc}</span>
-    </div>`).join('');
-  document.getElementById('modalLevels').innerHTML = `<h3>🗺️ Niveaux</h3><div class="level-list">${levelsHTML}</div>`;
+  document.getElementById('modalLevels').innerHTML = '';
 
-  const trophiesHTML = g.trophies.map(t => `
-    <div class="trophy-chip"><span class="t-icon">${t.icon}</span>${t.name}</div>`).join('');
-  document.getElementById('modalTrophies').innerHTML = `<h3>🏆 Trophées</h3><div class="trophies-grid">${trophiesHTML}</div>`;
+  if (inLib) {
+    const trophiesHTML = g.trophies.map(t => `
+      <div class="trophy-chip"><span class="t-icon">${t.icon}</span><span class="t-name">${t.name}</span></div>`).join('');
+    document.getElementById('modalTrophies').innerHTML = `<h3>🏆 Trophées</h3><div class="trophies-grid">${trophiesHTML}</div>`;
+  } else {
+    document.getElementById('modalTrophies').innerHTML = '';
+  }
 
   let actionsHTML = '';
   if (!isLoggedIn) {
