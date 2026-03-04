@@ -1,9 +1,9 @@
 <?php
 
-$isLoggedIn = Auth::isLoggedIn();
+$isLoggedIn  = Auth::isLoggedIn();
 $currentUser = Auth::currentUser();
 
-$gamesPayload = array_map(function (array $game): array {
+$gamesPayload = array_map(function (array $game) use ($trophiesByGame): array {
     $picture = trim((string)($game['picture'] ?? ''));
     if ($picture === '') {
         $picture = 'jeux/animalcrossing.jpg';
@@ -11,21 +11,30 @@ $gamesPayload = array_map(function (array $game): array {
         $picture = 'jeux/' . $picture;
     }
 
+    $gameId   = (int)$game['id'];
+    $rawTrophies = $trophiesByGame[$gameId] ?? [];
+    $trophies = array_map(fn($t) => [
+        'id'   => (int)$t['id'],
+        'icon' => (string)$t['icon'],
+        'name' => (string)$t['name'],
+    ], $rawTrophies);
+
     return [
-        'id' => (int)$game['id'],
-        'image' => $picture,
-        'title' => (string)($game['name'] ?? 'Jeu'),
-        'genre' => (string)($game['genre'] ?? 'Jeu'),
-        'year' => (int)($game['year'] ?? 0),
-        'rating' => (float)($game['rating'] ?? 0),
-        'desc' => (string)($game['description'] ?? 'Description indisponible.'),
-        'price' => (float)($game['price'] ?? 0),
-        'levels' => [],
-        'trophies' => [],
+        'id'       => $gameId,
+        'image'    => $picture,
+        'title'    => (string)($game['name'] ?? 'Jeu'),
+        'genre'    => (string)($game['genre'] ?? 'Jeu'),
+        'year'     => (int)($game['year'] ?? 0),
+        'rating'   => (float)($game['rating'] ?? 0),
+        'desc'     => (string)($game['description'] ?? 'Description indisponible.'),
+        'price'    => (float)($game['price'] ?? 0),
+        'trophies' => $trophies,
     ];
 }, $games);
 
 $ownedIds = array_map('intval', $ownedGameIds ?? []);
+// earnedTrophies : { gameId: [trophyId, ...] } — déjà groupé par game_id
+$earnedTrophiesJson = json_encode((object)($earnedTrophies ?? []), JSON_UNESCAPED_UNICODE);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -124,9 +133,11 @@ $ownedIds = array_map('intval', $ownedGameIds ?? []);
 
 <script src="js/stickers.js"></script>
 <script>
-    const GAMES = <?= json_encode($gamesPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+    const GAMES      = <?= json_encode($gamesPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
     const userLibrary = new Set(<?= json_encode($ownedIds, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>);
-    const isLoggedIn = <?= $isLoggedIn ? 'true' : 'false' ?>;
+    const isLoggedIn  = <?= $isLoggedIn ? 'true' : 'false' ?>;
+    // earnedTrophies : objet { "gameId": [trophyId, ...] }
+    const earnedTrophies = <?= $earnedTrophiesJson ?>;
 
     initFloatingStickers({ count: 18 });
 
@@ -189,10 +200,25 @@ $ownedIds = array_map('intval', $ownedGameIds ?? []);
         document.getElementById('modalStats').innerHTML = `
         <div class="modal-stat"><span class="s-val">${game.rating}</span><span class="s-lbl">Note</span></div>
         <div class="modal-stat"><span class="s-val">${game.year}</span><span class="s-lbl">Sortie</span></div>
-        <div class="modal-stat"><span class="s-val">${game.price.toFixed(2)}€</span><span class="s-lbl">Prix</span></div>`;
+        <div class="modal-stat"><span class="s-val">${game.price.toFixed(2)}€</span><span class="s-lbl">Prix</span></div>
+        ${inLibrary && game.trophies.length ? `<div class="modal-stat"><span class="s-val">${game.trophies.length}</span><span class="s-lbl">Trophées</span></div>` : ''}`;
 
         document.getElementById('modalLevels').innerHTML = '';
-        document.getElementById('modalTrophies').innerHTML = '';
+
+        if (inLibrary && game.trophies.length) {
+            const earned = earnedTrophies[String(game.id)] || [];
+            const trophiesHTML = game.trophies.map(t => {
+                const isEarned = earned.includes(t.id);
+                return `<div class="trophy-chip${isEarned ? ' earned' : ''}">
+                    <span class="t-icon">${t.icon}</span>
+                    <span class="t-name">${t.name}</span>
+                </div>`;
+            }).join('');
+            document.getElementById('modalTrophies').innerHTML =
+                `<h3>🏆 Trophées</h3><div class="trophies-grid">${trophiesHTML}</div>`;
+        } else {
+            document.getElementById('modalTrophies').innerHTML = '';
+        }
 
         let actionsHTML = '';
         if (!isLoggedIn) {
