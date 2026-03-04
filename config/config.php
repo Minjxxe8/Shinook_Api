@@ -1,6 +1,9 @@
 <?php
 
-define('BASE_URL', 'http://localhost:8000/');
+// Détection automatique de BASE_URL pour éviter les boucles de redirection
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host   = $_SERVER['HTTP_HOST'] ?? 'localhost:8000';
+define('BASE_URL', $scheme . '://' . $host . '/');
 define('ROOT_PATH', dirname(__DIR__));
 
 define('ROLE_USER',  'villageois');

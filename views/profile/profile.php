@@ -30,14 +30,13 @@
             <div class="profile-avatar">🦝</div>
             <div class="profile-info">
                 <div class="p-name"><?= htmlspecialchars($user['username']) ?></div>
-                <div class="p-island">🏝️ Île Shinook</div>
                 <div class="p-role">🌿 <?= htmlspecialchars($user['role']) ?></div>
             </div>
             <div class="profile-stats">
                 <div class="p-stat"><div class="sv"><?= count($games) ?></div><div class="sl">Jeux</div></div>
                 <div class="p-stat"><div class="sv"><?= htmlspecialchars((string)$user['created_at']) ?></div><div class="sl">Membre depuis</div></div>
             </div>
-            <a href="<?= BASE_URL ?>logout.php" class="logout-btn" style="text-decoration:none;display:inline-flex;align-items:center;">👋 Quitter l'île</a>
+            <!-- <a href="<?= BASE_URL ?>logout.php" class="logout-btn" style="text-decoration:none;display:inline-flex;align-items:center;">Quitter l'île</a> -->
         </div>
 
         <div class="section-header">
@@ -51,7 +50,7 @@
                     <span class="e-emoji">🏝️</span>
                     <h3>Ta bibliothèque est vide !</h3>
                     <p>Explore l'accueil et ajoute des jeux à ta collection.</p>
-                    <a href="<?= BASE_URL ?>game.php">🎮 Découvrir les jeux →</a>
+                    <a href="<?= BASE_URL ?>game.php">Découvrir les jeux →</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($games as $game): ?>
@@ -115,10 +114,10 @@
                     <label>Confirmer le nouveau mot de passe</label>
                     <input type="password" name="confirm_password">
                 </div>
-                <button type="submit" class="btn-full">💾 Mettre à jour</button>
+                <button type="submit" class="btn-full">Mettre à jour</button>
             </form>
 
-            <a href="<?= BASE_URL ?>delete.php" class="btn-full" style="margin-top:0.8rem;background:#c0392b;box-shadow:0 4px 0 #922b21;text-decoration:none;display:flex;justify-content:center;">🗑️ Supprimer mon compte</a>
+            <a href="<?= BASE_URL ?>delete.php" class="btn-full" style="margin-top:0.8rem;background:#c0392b;box-shadow:0 4px 0 #922b21;text-decoration:none;display:flex;justify-content:center;">Supprimer mon compte</a>
         </div>
     </div>
 </div>
